@@ -2,7 +2,6 @@ pipeline {
     agent any
        tools{
       maven 'localMaven' 
-      winscp 'winscp'
  } 
     parameters {
          string(name: 'tomcat_dev', defaultValue: '35.166.210.154', description: 'Staging Server')
@@ -30,13 +29,13 @@ stages{
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        bat "winscp -i Documents/Jenkins_udemy/tomcataccess.pem **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps"
+                        bat "scp -i Documents/Jenkins_udemy/tomcataccess.pem **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps"
                     }
                 }
 
                 stage ("Deploy to Production"){
                     steps {
-                        bat "winscp -i Documents/Jenkins_udemy/tomcataccess.pem **/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps"
+                        bat "scp -i Documents/Jenkins_udemy/tomcataccess.pem **/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps"
                     }
                 }
             }
